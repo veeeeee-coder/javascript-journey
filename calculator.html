@@ -1,0 +1,149 @@
+<!--Challenge Exercises – Calculator
+We’ll build a calculator step by step.
+Go to
+supersimple.dev/projects/calculator
+in your browser.
+Open the Console and click the calculator buttons to see how it works.-->
+<!--Setup
+
+Create a new file called calculator.html.
+5l
+Add the full HTML structure:
+<!DOCTYPE html>, <html>, <head>, <body>
+Add a <title> with the text “Calculator”.
+5m
+Create these 5 buttons:
+1 2 3 + =
+5n
+Create a <script>:
+Create a variable called calculation
+Save an empty string inside it:
+let calculation = '';
+This variable will store calculations like:
+1 + 2
+11 + 2 + 2
+5o
+When clicking the “1” button:
+Add the string "1" to calculation
+Display it in the console:
+console.log(calculation);
+5p
+Do the same for buttons:
+2
+3
++
+(use '+' instead of +)
+5q
+
+When clicking the “=” button:
+Use:
+calculation = eval(calculation);
+Display the result in the console:
+console.log(calculation);
+(eval() converts the calculation string into real math.)
+5r
+
+Create the rest of the calculator buttons.
+To make multiple rows of buttons, place buttons inside <p> elements, like:
+<p>
+  <button>1</button>
+  <button>2</button>
+</p>
+<p>
+  <button>4</button>
+  <button>5</button>
+</p>
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calculator</title>
+    <style>
+        button{
+            background-color: pink;
+        }
+    </style>
+  </head>
+  <body>
+    <h1 style="color: rgb(243, 117, 138);">Calculator</h1>
+    <p>
+    <button onclick="calculation+='1';
+    console.log(`${calculation}`)">1</button>
+
+    <button onclick="calculation+='2';
+    console.log(`${calculation}`)">2</button>
+
+    <button onclick="calculation+='3';
+    console.log(`${calculation}`)">3</button>
+
+    
+    <button onclick="calculation+='+';
+    console.log(`${calculation}`)">+</button>
+
+    </p>
+
+    <p>
+
+    <button onclick="calculation+='4';
+    console.log(`${calculation}`)">4</button>
+
+    <button onclick="calculation+='5';
+    console.log(`${calculation}`)">5</button>
+
+    <button onclick="calculation+='6';
+    console.log(`${calculation}`)">6</button>
+
+    <button onclick="calculation+='-';
+    console.log(`${calculation}`)">-</button>
+
+    </p>
+
+    <p>
+
+    <button onclick="calculation+='7';
+    console.log(`${calculation}`)">7</button>
+
+    <button onclick="calculation+='8';
+    console.log(`${calculation}`)">8</button>
+
+    <button onclick="calculation+='9';
+    console.log(`${calculation}`)">9</button>
+
+    <button onclick="calculation+='*';
+    console.log(`${calculation}`)">x</button>
+
+   
+
+    </p>
+
+
+    <p>
+
+    <button onclick="calculation+='0';
+    console.log(`${calculation}`)">0</button>
+
+    <button onclick="calculation+='.';
+    console.log(`${calculation}`)">.</button>
+
+    <button onclick="calculation+='/';
+    console.log(`${calculation}`)">/</button>
+
+    <button onclick="calculation=eval(calculation);
+    console.log(`${calculation}`)">=</button>
+
+    </p>
+
+<p>
+    <button onclick=" console.log(`cleared.`);
+    calculation='';">Clear</button>
+</p>
+
+
+
+    <script>
+      let calculation='';
+
+    </script>
+  </body>
+</html>
