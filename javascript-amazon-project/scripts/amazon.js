@@ -1,32 +1,8 @@
-//first step was to save the data for every product in an array of objects. Each object has properties like image, name, rating and priceCents. This way we can easily access the data for each product and generate html for it.
+//first step was to save the data for every product in an array of objects. Each object has properties like image, name, rating and priceCents. This way we can easily access the data for each product and generate html for it.(in data file const products = [) <script src="data/products.js"></script>)
 
-const products=[{
-    image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
-    name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
-    rating:{
-        stars: 4.5,
-        count: 87
-    },
-    priceCents: 1090
-}, {
-    image: 'images/products/intermediate-composite-basketball.jpg',
-    name: 'Intermediate Size Basketball',
-    rating:{
-        stars: 4,
-        count: 127
-    },
-    priceCents: 2095
-},{
-    image: 'images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg',
-    name: 'Adults Plain Cotton T-Shirt - 2 Pack',
-rating:{
-    stars: 4.5,
-     count: 56
-     },
- priceCents: 799
-}];
-
+  
 //3rd step-//combine all this html together(+=) and put it on web page(using DOM)
+
 
 let productsHTML='';
 
@@ -57,7 +33,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -73,12 +49,12 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">
             Add to Cart
           </button>
         </div>`;
@@ -86,6 +62,59 @@ products.forEach((product) => {
 
 
 });
-console.log(productsHTML);
+//console.log(productsHTML);
 //not that difference is showing but we are generating html w JS and using DOM put html inside amazon.html
 document.querySelector('.js-products-grid').innerHTML=productsHTML;
+//to make it interactive using add it cart button actually working
+const addedMessageTimeouts = {};
+document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+    button.addEventListener('click',() => {
+        //console.log('hehe product added');
+        const {productId}=button.dataset;
+
+        let matchingItem;
+
+        cart.forEach((item) => {
+        if (productId === item.productId) {
+            matchingItem = item;
+        }
+        });
+
+        const quantitySelector=document.querySelector(`.js-quantity-selector-${productId}`
+
+        );
+        const quantity = quantitySelector ? Number(quantitySelector.value) : 1;
+
+        if (matchingItem) {
+        matchingItem.quantity += quantity;
+        } else {
+        cart.push({
+            productId,
+            quantity
+        });
+        }
+        let cartQuantity=0;
+        cart.forEach((item) => {
+            cartQuantity+=item.quantity;
+        });
+        document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
+        //console.log(cart);
+        const addedMessage = document.querySelector(
+        `.js-added-to-cart-${productId}`
+      );
+
+            addedMessage.classList.add('added-to-cart-visible');
+                const previousTimeoutId = addedMessageTimeouts[productId];
+                if (previousTimeoutId) {
+            clearTimeout(previousTimeoutId);
+        }
+
+        const timeoutId = setTimeout(() => {
+            addedMessage.classList.remove('added-to-cart-visible');
+        }, 2000);
+
+        // Save the timeoutId for this product
+        // so we can stop it later if we need to.
+        addedMessageTimeouts[productId] = timeoutId;
+    });
+});
