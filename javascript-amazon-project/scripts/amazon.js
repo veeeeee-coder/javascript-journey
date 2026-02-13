@@ -2,8 +2,9 @@
 
   
 //3rd step-//combine all this html together(+=) and put it on web page(using DOM)
-
-
+import {cart, addToCart} from '../data/cart.js';
+import {products} from '../data/products.js';
+import {formatCurrency} from './utils/money.js';
 let productsHTML='';
 
 //2nd step takes each object and saves it in a parameter called product and then we can use that parameter to access the properties of the object so that we can generate html for it,then instead of doing this for every product we insert property names like this(src="{product.image})
@@ -29,7 +30,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            $${(product.priceCents/100).toFixed(2)}
+            $${formatCurrency(product.priceCents)}
           </div>
 
           <div class="product-quantity-container">
@@ -65,43 +66,39 @@ products.forEach((product) => {
 //console.log(productsHTML);
 //not that difference is showing but we are generating html w JS and using DOM put html inside amazon.html
 document.querySelector('.js-products-grid').innerHTML=productsHTML;
+updateCartQuantity();
+
 //to make it interactive using add it cart button actually working
 const addedMessageTimeouts = {};
-document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-    button.addEventListener('click',() => {
-        //console.log('hehe product added');
-        const {productId}=button.dataset;
 
-        let matchingItem;
 
-        cart.forEach((item) => {
-        if (productId === item.productId) {
-            matchingItem = item;
-        }
-        });
 
-        const quantitySelector=document.querySelector(`.js-quantity-selector-${productId}`
 
-        );
-        const quantity = quantitySelector ? Number(quantitySelector.value) : 1;
 
-        if (matchingItem) {
-        matchingItem.quantity += quantity;
-        } else {
-        cart.push({
-            productId,
-            quantity
-        });
-        }
-        let cartQuantity=0;
-        cart.forEach((item) => {
-            cartQuantity+=item.quantity;
+
+
+function updateCartQuantity() {
+    let cartQuantity=0;
+    cart.forEach((cartItem) => {
+            cartQuantity+=cartItem.quantity;
         });
         document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
         //console.log(cart);
+        
+}
+
+document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+    button.addEventListener('click',() => {
+        //console.log('hehe product added');
+        const productId=button.dataset.productId;
+        addToCart(productId);
+        updateCartQuantity();
         const addedMessage = document.querySelector(
-        `.js-added-to-cart-${productId}`
-      );
+  `.js-added-to-cart-${productId}`
+);
+        
+        
+       
 
             addedMessage.classList.add('added-to-cart-visible');
                 const previousTimeoutId = addedMessageTimeouts[productId];
